@@ -136,7 +136,15 @@ const PETS = [
  {e:"🐉",n:"Sparkle",k:"friendly dragon",c:260},{e:"🦚",n:"Jewel",k:"peacock",c:300},{e:"🐩",n:"Fifi",k:"poodle",c:350},
  {e:"🐈‍⬛",n:"Midnight",k:"magic cat",c:400},{e:"👑",n:"Royal Crown",k:"crown of the kingdom",c:500}];
 const COUNT_EMO = ["🐱","🐶","🐰","🦄","🌸","⭐","🍓","🧁","🦋","💎"];
-const PRAISE = ["Sparkly!","Royal job!","Purr-fect!","Amazing!","You did it!","Super star!","Wow, princess!","Pawsome!","Magical!"];
+const PRAISE = ["Sparkly!","Royal job!","Purr-fect!","Amazing!","You did it!","Super star!","Wow, princess!","Pawsome!","Magical!","Brilliant!","Yay!"];
+const CHEER = ["You are SO smart!","Wow, your brain is sparkling today!","You're a super reader and a math whiz!","That was amazing! I knew you could do it!",
+ "Yes! You are getting smarter every single day!","Look at you go! You're a superstar!","Great thinking! Your brain is so strong!",
+ "You worked hard and you got it! I'm so proud of you!","Ooh, you're a genius princess!","Whiskers says you are the smartest girl in the kingdom!",
+ "Biscuit is doing a happy dance for you!","You make math look easy!","Hooray! You're a reading rock star!","You're brave, you're smart, and you're awesome!"];
+const OOPS = ["Ooh, so close! You're a great thinker. Try again!","That's okay! Mistakes help our brains grow. Try again!",
+ "Hmm, almost! I believe in you!","Not quite, but you're so smart. Give it another try!","Take your time. You've got this!"];
+const FINISH = ["You finished the whole game! You are so smart and so strong! I am super proud of you!",
+ "Wow wow wow! You did it all! You're a real royal genius!","Hooray! You never gave up! That's what smart girls do!"];
 
 /* ---------------- STATE ---------------- */
 const KEY="sparkleKingdom.v1";
@@ -159,7 +167,7 @@ function pickVoice(){if(!window.speechSynthesis)return null;const v=speechSynthe
  return v.find(x=>/samantha|female|zira|google us english|karen|moira|tessa/i.test(x.name))||v[0]||null}
 if(window.speechSynthesis){VOICE=pickVoice();speechSynthesis.onvoiceschanged=()=>{VOICE=pickVoice()}}
 function say(t,rate){if(!S.voice||!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);
- if(VOICE)u.voice=VOICE;u.rate=rate||0.9;u.pitch=1.25;speechSynthesis.speak(u)}
+ if(VOICE)u.voice=VOICE;u.rate=(rate||0.95)*1.08;u.pitch=1.5;u.volume=1;speechSynthesis.speak(u)}
 
 let actx;function tone(f,d,type,delay){try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();const o=actx.createOscillator(),g=actx.createGain();
  o.type=type||"sine";o.frequency.value=f;const t=actx.currentTime+(delay||0);g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.001,t+d);
@@ -176,8 +184,8 @@ function toast(t,ms){const el=$("#toast");el.innerHTML=t;el.classList.add("on");
 function addStar(n){const before=unlocked().length;S.stars+=n||1;save();const after=unlocked();
  if(after.length>before){const p=after[after.length-1];setTimeout(()=>{confetti(50);toast(`<div style="font-size:80px">${p.e}</div>New friend!<br>${p.n} the ${p.k}`,2600);say(`You got a new friend! ${p.n} the ${p.k}!`)},700)}}
 const unlocked=()=>PETS.filter(p=>S.stars>=p.c);
-function right(){chime();confetti(18);const p=pick(PRAISE);toast(p);say(p,1);addStar(1)}
-function wrong(){boop();say("Try again!",1)}
+function right(){chime();confetti(18);const p=pick(PRAISE);toast(p);say(p+" "+(Math.random()<.6?pick(CHEER):""),1.05);addStar(1)}
+function wrong(){boop();toast("💖 So close!",900);say(pick(OOPS),1)}
 
 function header(title){return `<header><button class="btn ghost" onclick="home()" style="padding:10px 16px;font-size:20px">🏰 Home</button>
  <h1 style="font-size:clamp(22px,5vw,34px)">${title}</h1><span class="pill">⭐ ${S.stars}</span></header>`}
@@ -186,9 +194,9 @@ function progress(i,n){return `<div class="top" style="margin-top:12px"><span cl
 
 /* round runner: n questions, then celebration */
 function rounds(title,n,make){let i=0;const next=()=>{if(i>=n){finish(title);return}i++;make(i,n,next)};next()}
-function finish(title){S.done[title]=(S.done[title]||0)+1;addStar(3);save();confetti(70);say("You finished! You earned three bonus stars!");
+function finish(title){S.done[title]=(S.done[title]||0)+1;addStar(3);save();confetti(70);say(pick(FINISH)+" You earned three bonus stars!",1);
  app.innerHTML=header(title)+`<div class="card"><div style="font-size:90px">🏆</div><div class="big" style="font-size:44px">Royal Win!</div>
- <p style="font-size:22px">+3 bonus stars for ${esc(S.name)}!</p><div class="row"><button class="btn" onclick="home()">🏰 Castle</button>
+ <p style="font-size:22px">+3 bonus stars for ${esc(S.name)}!<br>You are smart, brave and amazing! 💖</p><div class="row"><button class="btn" onclick="home()">🏰 Castle</button>
  <button class="btn lav" onclick="pets()">🐾 My Pets</button></div></div>`}
 
 /* ---------------- SCREENS ---------------- */
@@ -211,6 +219,8 @@ function home(){if(window.speechSynthesis)speechSynthesis.cancel();
   <div class="tile" onclick="mathQuiz('add')"><span class="em">🧁</span><b>Cupcake Adding</b><small>Plus</small></div>
   <div class="tile" onclick="mathQuiz('sub')"><span class="em">🐶</span><b>Puppy Take-Away</b><small>Minus</small></div>
   <div class="tile" onclick="mathQuiz('${g>=2?(g==3?'mul':'tens'):'count'}')"><span class="em">${g==3?'🦄':g==2?'💰':'🐰'}</span><b>${g==3?'Unicorn Times':g==2?'Royal Coins':'Bunny Count'}</b><small>${g==3?'Multiply':g==2?'Tens & ones':'Counting'}</small></div>
+  <div class="tile" onclick="mathQuiz('tensadd')"><span class="em">🎀</span><b>Big Round Numbers</b><small>${g==1?'10 + 20':g==2?'30 + 40':'300 + 500'}</small></div>
+  <div class="tile" onclick="mathQuiz('missing')"><span class="em">🔍</span><b>Mystery Number</b><small>9 + _ = 11</small></div>
   <div class="tile" onclick="mathQuiz('mix')"><span class="em">👸</span><b>Princess Challenge</b><small>A bit of everything</small></div>
   <div class="tile" onclick="mathQuiz('story')"><span class="em">🐾</span><b>Pet Problems</b><small>Word problems</small></div>
   <div class="tile" onclick="mathQuiz('compare')"><span class="em">🐊</span><b>Bigger or Smaller</b><small>&gt; &lt; =</small></div>
@@ -228,7 +238,7 @@ function flash(){const list=shuffle(words()).slice(0,10);
  rounds("Magic Words",10,(i,n,next)=>{const w=list[i-1];
   app.innerHTML=header("🪄 Magic Words")+progress(i,n)+`<div class="card"><p class="hint">Read the magic word!</p><div class="big">${esc(w)}</div>
   <div class="row"><button class="btn sky" id="hear">🔊 Hear it</button><button class="btn mint" id="got">✅ I read it!</button></div></div>`+friendSay("Say it out loud, then tap the green button!");
-  $("#hear").onclick=()=>say(w,.8);$("#got").onclick=()=>{S.words[w]=(S.words[w]||0)+1;right();setTimeout(next,900)}})}
+  $("#hear").onclick=()=>say(w,.8);$("#got").onclick=()=>{S.words[w]=(S.words[w]||0)+1;right();setTimeout(next,1800)}})}
 
 /* Kitten Calls: hear a word, tap it */
 function hearIt(){rounds("Kitten Calls",10,(i,n,next)=>{const all=words(),w=pick(all);const opts=shuffle(uniq([w,...shuffle(all.filter(x=>x!==w)).slice(0,3)]));
@@ -236,7 +246,7 @@ function hearIt(){rounds("Kitten Calls",10,(i,n,next)=>{const all=words(),w=pick
  <button class="btn sky" id="again">🔊 Say it again</button><div class="choices">${opts.map(o=>`<button class="choice" data-w="${esc(o)}">${esc(o)}</button>`).join("")}</div></div>`;
  setTimeout(()=>say(w,.8),300);$("#again").onclick=()=>say(w,.8);
  if(!S.voice)$("#again").insertAdjacentHTML("afterend",`<p class="hint">Sound is off — a grown-up can say: <b>${esc(w)}</b></p>`);
- app.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{if(b.dataset.w===w){b.classList.add("ok");right();setTimeout(next,900)}else{b.classList.add("no");wrong()}})})}
+ app.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{if(b.dataset.w===w){b.classList.add("ok");right();setTimeout(next,1800)}else{b.classList.add("no");wrong()}})})}
 
 /* Castle Sentences: tap words in order */
 function builder(){const list=shuffle(SENT[S.grade]);
@@ -293,13 +303,23 @@ function memory(){const ws=shuffle(words()).slice(0,S.grade==1?4:6);const gems=[
 
 /* ---------------- MATH ---------------- */
 function makeProblem(kind){const g=S.grade;let type=kind;
- if(kind==="mix")type=pick(g==1?["add","sub","count","compare"]:g==2?["add","sub","tens","compare"]:["add","sub","mul","div","compare"]);
+ if(kind==="mix")type=pick(g==1?["add","sub","count","compare","tensadd","missing"]:g==2?["add","sub","tens","compare","tensadd","missing"]:["add","sub","mul","div","compare","tensadd","missing"]);
  const em=pick(COUNT_EMO);let a,b,ans,q,objs="",speak;
  const lim={1:10,2:50,3:100}[g];
  if(type==="add"){if(g==1){a=rnd(10);b=rnd(11-a)}else if(g==2){a=10+rnd(40);b=1+rnd(30)}else{a=100+rnd(400);b=10+rnd(300)}ans=a+b;q=`${a} + ${b}`;
   if(g==1&&a+b<=10)objs=em.repeat(a)+" ➕ "+em.repeat(b);speak=`${a} plus ${b}`}
  else if(type==="sub"){if(g==1){a=1+rnd(10);b=rnd(a+1)}else if(g==2){a=20+rnd(60);b=1+rnd(a-5)}else{a=200+rnd(700);b=10+rnd(a-50)}ans=a-b;q=`${a} − ${b}`;
   if(g==1)objs=em.repeat(a-b)+`<span style="opacity:.25">${em.repeat(b)}</span>`;speak=`${a} take away ${b}`}
+ else if(type==="tensadd"){if(g==1){a=10*(1+rnd(5));b=10*(1+rnd(10-a/10))}else if(g==2){a=10*(1+rnd(9));b=10*(1+rnd(9));if(rnd(3)==0){a=100*(1+rnd(4));b=10*(1+rnd(9))}}
+   else{const u=pick([10,100,100,1000]);a=u*(1+rnd(9));b=u*(1+rnd(9));if(u===10){a+=100*(1+rnd(5))}}
+   ans=a+b;q=`${a} + ${b}`;if(g==1)objs="🔟".repeat(a/10)+" ➕ "+"🔟".repeat(b/10);speak=`${a} plus ${b}`}
+ else if(type==="missing"){const sub=g>1&&rnd(3)===0;
+   if(g==1){a=1+rnd(10);b=1+rnd(10)}else if(g==2){a=pick([rnd(20),10*(1+rnd(8)),5+rnd(45)]);b=1+rnd(20)}else{a=pick([10*(1+rnd(20)),20+rnd(80),100*(1+rnd(8))]);b=pick([1+rnd(50),10*(1+rnd(9))])}
+   if(g==3&&rnd(4)===0){a=2+rnd(9);b=2+rnd(9);ans=b;q=`${a} × ▢ = ${a*b}`;speak=`${a} times what equals ${a*b}?`}
+   else if(sub){const c=a+b;ans=b;q=`${c} − ▢ = ${a}`;speak=`${c} take away what equals ${a}?`}
+   else if(rnd(2)){ans=b;q=`${a} + ▢ = ${a+b}`;speak=`${a} plus what equals ${a+b}?`}
+   else{ans=a;q=`▢ + ${b} = ${a+b}`;speak=`What plus ${b} equals ${a+b}?`}
+   if(g==1)objs=`<span style="font-size:24px;word-break:normal;display:block">Count up to find the mystery number! 🔍</span>`}
  else if(type==="count"){a=3+rnd(13);ans=a;q="How many?";objs=em.repeat(a);speak="How many are there?"}
  else if(type==="tens"){const t=1+rnd(9),o=rnd(10);ans=t*10+o;q=`${t} tens and ${o} ones`;objs="🔟".repeat(t)+" "+"🪙".repeat(o);speak=`${t} tens and ${o} ones is what number?`}
  else if(type==="mul"){a=1+rnd(10);b=1+rnd(g==3?10:5);ans=a*b;q=`${a} × ${b}`;if(a*b<=24)objs=Array(a).fill(em.repeat(b)).join("<br>");speak=`${a} times ${b}`}
@@ -315,13 +335,13 @@ function makeProblem(kind){const g=S.grade;let type=kind;
  return finishOpts({q,ans,speak,objs})}
 function finishOpts(p){const s=new Set([p.ans]);const spread=Math.max(3,Math.round(p.ans*.2));let guard=0;
  while(s.size<4&&guard++<50){const d=p.ans+(rnd(2*spread+1)-spread);if(d>=0)s.add(d)}p.opts=shuffle([...s]);return p}
-function mathQuiz(kind){const names={add:"🧁 Cupcake Adding",sub:"🐶 Puppy Take-Away",count:"🐰 Bunny Count",tens:"💰 Royal Coins",mul:"🦄 Unicorn Times",mix:"👸 Princess Challenge",story:"🐾 Pet Problems",compare:"🐊 Bigger or Smaller"};
+function mathQuiz(kind){const names={tensadd:"🎀 Big Round Numbers",missing:"🔍 Mystery Number",add:"🧁 Cupcake Adding",sub:"🐶 Puppy Take-Away",count:"🐰 Bunny Count",tens:"💰 Royal Coins",mul:"🦄 Unicorn Times",mix:"👸 Princess Challenge",story:"🐾 Pet Problems",compare:"🐊 Bigger or Smaller"};
  rounds(names[kind],10,(i,n,next)=>{const p=makeProblem(kind);
-  app.innerHTML=header(names[kind])+progress(i,n)+`<div class="card">${p.story?`<div class="sentence">${esc(p.q)}</div>`:`<div class="objs">${p.objs}</div><div class="math">${esc(p.q)}${p.q.includes("?")||p.q.includes("ones")?"":" = ?"}</div>`}
+  app.innerHTML=header(names[kind])+progress(i,n)+`<div class="card">${p.story?`<div class="sentence">${esc(p.q)}</div>`:`<div class="objs">${p.objs}</div><div class="math">${esc(p.q)}${p.q.includes("?")||p.q.includes("ones")||p.q.includes("=")?"":" = ?"}</div>`}
   ${p.story&&p.objs?"":""}<button class="btn sky" id="hear">🔊 Read it</button>
   <div class="choices">${p.opts.map(o=>`<button class="choice" style="font-size:34px" data-a="${esc(o)}">${esc(o)}</button>`).join("")}</div></div>`;
   $("#hear").onclick=()=>say(p.speak,.85);
-  app.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{if(b.dataset.a===String(p.ans)){b.classList.add("ok");right();setTimeout(next,900)}else{b.classList.add("no");wrong()}})})}
+  app.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{if(b.dataset.a===String(p.ans)){b.classList.add("ok");right();setTimeout(next,1800)}else{b.classList.add("no");wrong()}})})}
 
 /* ---------------- PETS ---------------- */
 function pets(){const u=unlocked().length;const nxt=PETS.find(p=>S.stars<p.c);
