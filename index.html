@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Sparkle Kingdom</title>
+<meta name="theme-color" content="#ff7eb6">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
+<style>
+:root{--pink:#ff7eb6;--deep:#d6337f;--lav:#b18cff;--mint:#6fe3c1;--gold:#ffc83d;--sky:#7cc8ff;--ink:#4a2350;--card:#fff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{margin:0;height:100%}
+body{font-family:"Comic Sans MS","Chalkboard SE","Baloo 2",system-ui,sans-serif;color:var(--ink);
+background:linear-gradient(160deg,#ffe3f1 0%,#efe2ff 45%,#dff6ff 100%);background-attachment:fixed;overflow-x:hidden}
+#sky{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.twinkle{position:absolute;font-size:18px;opacity:.6;animation:tw 3s ease-in-out infinite}
+@keyframes tw{0%,100%{transform:scale(.6);opacity:.25}50%{transform:scale(1.2);opacity:.9}}
+main{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:14px 16px 90px}
+header{display:flex;align-items:center;gap:10px;justify-content:space-between}
+h1{margin:0;font-size:clamp(26px,6vw,42px);color:var(--deep);text-shadow:2px 2px 0 #fff,4px 4px 0 #ffc2dd}
+.pill{background:#fff;border-radius:999px;padding:6px 14px;font-weight:700;box-shadow:0 3px 0 #f3b3d3;font-size:18px;white-space:nowrap}
+.gear{font-size:28px;background:none;border:none;cursor:pointer;opacity:.7}
+.btn{font:inherit;border:none;border-radius:22px;padding:14px 20px;font-size:22px;font-weight:700;cursor:pointer;color:#fff;
+background:var(--pink);box-shadow:0 6px 0 var(--deep);transition:transform .08s}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--deep)}
+.btn.lav{background:var(--lav);box-shadow:0 6px 0 #7d55d9}.btn.mint{background:#2fc79b;box-shadow:0 6px 0 #1a8f6d}
+.btn.gold{background:#f5a500;box-shadow:0 6px 0 #b77800}.btn.sky{background:#3ea9f5;box-shadow:0 6px 0 #1f73b3}
+.btn.ghost{background:#fff;color:var(--deep);box-shadow:0 6px 0 #f3b3d3}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-top:16px}
+.tile{background:var(--card);border-radius:26px;padding:16px 10px;text-align:center;cursor:pointer;box-shadow:0 7px 0 #f0b6d6;border:3px solid #fff;transition:transform .1s}
+.tile:active{transform:scale(.96)}
+.tile .em{font-size:52px;display:block;animation:bob 2.4s ease-in-out infinite}
+.tile b{display:block;font-size:20px;margin-top:6px}.tile small{opacity:.7}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.card{background:#fffffff0;border-radius:30px;padding:20px;box-shadow:0 8px 0 #f0b6d6;margin-top:16px;text-align:center}
+.friend{display:flex;align-items:center;gap:12px;background:#fff;border-radius:24px;padding:10px 16px;margin-top:14px;box-shadow:0 5px 0 #e6c9ff}
+.friend .face{font-size:54px;animation:bob 2s infinite}
+.friend .say{font-size:20px;text-align:left}
+.big{font-size:clamp(46px,13vw,96px);font-weight:800;color:var(--deep);letter-spacing:2px;margin:10px 0}
+.sentence{font-size:clamp(24px,5.5vw,36px);line-height:1.5;margin:10px 0}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:16px}
+.choice{font:inherit;font-size:28px;font-weight:700;background:#fff;border:4px solid #ffd1e8;border-radius:22px;padding:16px 8px;cursor:pointer;color:var(--ink)}
+.choice.ok{background:#c9ffe9;border-color:#2fc79b}.choice.no{background:#ffe0e0;border-color:#ff7b7b;animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.chip{font:inherit;font-size:24px;font-weight:700;background:#fff;border:3px solid var(--lav);color:var(--ink);border-radius:16px;padding:10px 14px;cursor:pointer}
+.chip.used{opacity:.25;pointer-events:none}
+.slot{min-height:64px;border:3px dashed var(--lav);border-radius:18px;padding:8px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;background:#faf6ff}
+.slot .chip{border-color:var(--pink)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.prog{flex:1;height:18px;background:#fff;border-radius:99px;overflow:hidden;min-width:120px;box-shadow:inset 0 2px 4px #0001}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--lav));transition:width .4s}
+.math{font-size:clamp(48px,13vw,90px);font-weight:800;color:var(--deep)}
+.objs{font-size:clamp(26px,6vw,40px);line-height:1.2;margin:6px 0;word-break:break-all}
+.pets{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;margin-top:14px}
+.pet{background:#fff;border-radius:22px;padding:12px;text-align:center;box-shadow:0 5px 0 #e6c9ff}
+.pet .em{font-size:50px;display:block}.pet.locked .em{filter:grayscale(1) brightness(1.6);opacity:.5}
+.pet b{display:block}.pet small{display:block;opacity:.7}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+.fly{position:absolute;font-size:34px;animation:fall 1.6s ease-in forwards}
+@keyframes fall{from{transform:translateY(0) rotate(0)}to{transform:translateY(110vh) rotate(540deg);opacity:.2}}
+#toast{position:fixed;left:50%;top:40%;transform:translate(-50%,-50%) scale(0);background:#fff;border-radius:30px;padding:24px 34px;font-size:34px;font-weight:800;color:var(--deep);box-shadow:0 10px 0 #f0b6d6;z-index:60;transition:transform .25s cubic-bezier(.3,1.6,.6,1);text-align:center}
+#toast.on{transform:translate(-50%,-50%) scale(1)}
+.modal{position:fixed;inset:0;background:#4a235088;display:none;align-items:center;justify-content:center;z-index:70;padding:16px}
+.modal.on{display:flex}.modal .card{max-width:520px;width:100%;max-height:90vh;overflow:auto;text-align:left}
+.gradebtns{display:flex;gap:10px;margin:10px 0}.gradebtns .btn{flex:1}
+.gradebtns .btn.sel{outline:5px solid var(--gold)}
+label{font-size:18px}
+.hint{opacity:.7;font-size:16px}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div id="sky"></div>
+<div id="confetti"></div>
+<div id="toast"></div>
+<main id="app"></main>
+
+<div class="modal" id="grown">
+ <div class="card">
+  <h2 style="margin-top:0">Grown-ups</h2>
+  <p><b>Grade level</b> (changes the words, sentences and math):</p>
+  <div class="gradebtns" id="gradebtns"></div>
+  <p><label><input type="checkbox" id="voiceOn"> Read words out loud</label></p>
+  <p><b>Name on the crown:</b><br><input id="kidName" maxlength="16" style="font:inherit;font-size:22px;padding:8px;border-radius:12px;border:2px solid #ddd;width:100%"></p>
+  <p id="stats" class="hint"></p>
+  <p class="hint">Everything stays on this device. No accounts, no ads, nothing is sent anywhere.</p>
+  <div class="row"><button class="btn ghost" id="resetBtn">Reset stars</button><button class="btn" id="closeGrown">Done</button></div>
+ </div>
+</div>
+
+<script>
+/* ---------------- DATA ---------------- */
+const SIGHT = {
+ 1:["the","of","and","a","to","in","is","you","that","it","he","was","for","on","are","as","with","his","they","I","at","be","this","have","from","or","one","had","by","but","not","what","all","were","we","when","your","can","said","there","use","an","each","which","she","do","how","their","if","will","up","other","about","out","many","then","them","these","so","some","her","would","make","like","him","into","has","look","two","more","go","see","no","could","my","than","been","who","its","now","come","day","did","down","get","made","may","part","over","new","little","play","jump","here","help","went","said","yes","pretty","good"],
+ 2:["always","around","because","been","before","best","both","buy","call","cold","does","don't","fast","first","five","found","gave","goes","green","its","made","many","off","or","pull","read","right","sing","sit","sleep","tell","their","these","those","upon","us","use","very","wash","which","why","wish","work","would","write","your","again","another","answer","away","friend","school","thought","together","every","laugh","enough","only","once","people","really","should","special","where","whole","while","world","young","eight","clothes","knew","kind","light","near","often","until","learn"],
+ 3:["about","better","bring","carry","clean","cut","done","draw","drink","eight","fall","far","full","got","grow","hold","hot","hurt","if","keep","kind","laugh","light","long","much","myself","never","only","own","pick","seven","shall","show","six","small","start","ten","today","together","try","warm","although","beautiful","believe","brought","caught","different","especially","finally","important","instead","knowledge","language","minute","neighbor","ocean","probably","question","remember","since","surprise","thousand","through","weird","whether","favorite","enormous","journey","castle","imagine","mysterious","treasure"]
+};
+// Sentences: words in order. Grade 1 short, grade 2 medium, grade 3 longer.
+const SENT = {
+ 1:["The cat is on the bed.","I can see a big dog.","The princess has a red hat.","My kitten likes to play.","We go to the park.","The puppy can jump up.","I like my pink dress.","She has a little bunny.","The pony is in the barn.","Look at the pretty fish.","He said yes to me.","The duck can swim.","I see two cats.","Come and play with me.","The queen is very kind."],
+ 2:["The princess found a kitten under the tree.","My puppy always wants to play after school.","We read a book about a magic unicorn.","The bunny hopped away because it was scared.","Every morning I brush my long hair.","The kind queen gave each friend a gift.","Two little kittens slept on a soft pillow.","Our dog runs very fast in the green grass.","The castle has a tall tower and a big gate.","Please help me find my sparkly shoe."],
+ 3:["The brave princess crossed the bridge to rescue her lost puppy.","Although it was raining, the friends had a picnic in the castle.","The curious kitten climbed the tallest tower in the whole kingdom.","My favorite part of the story was when the dragon became friendly.","She remembered to feed the horses before the royal ball began.","The unicorn's mane sparkled like a thousand tiny stars.","Our class learned that dolphins breathe air through a hole on top.","The princess wrote a letter to thank her neighbor for the flowers."]
+};
+// Reading comprehension: short story + question + answers (first is correct)
+const STORIES = {
+ 1:[
+  {t:"Mia has a cat. The cat is gray. It likes to nap in the sun.",q:"What color is the cat?",a:["gray","pink","black"]},
+  {t:"The dog ran to the park. He got a red ball. He was happy.",q:"What did the dog get?",a:["a ball","a hat","a cake"]},
+  {t:"Princess Rosie has a crown. It is gold. She wears it to tea.",q:"Who has a crown?",a:["Rosie","the dog","the fish"]},
+  {t:"Ben the bunny ate a carrot. Then he hopped home to bed.",q:"What did Ben eat?",a:["a carrot","a cookie","an apple"]},
+  {t:"It is a hot day. Ava and her pup jump in the pool.",q:"Where do they jump?",a:["in the pool","in the bed","in the car"]},
+  {t:"The fish is in a tank. It is orange. It swims all day.",q:"Where is the fish?",a:["in a tank","in a tree","in a box"]}],
+ 2:[
+  {t:"Luna wanted a pet. Her mom took her to the shelter. A small white puppy licked her hand, so Luna named him Snowball.",q:"Why did Luna name the puppy Snowball?",a:["He was white","He was cold","He liked snow cones"]},
+  {t:"The kitten climbed up a tall tree. She could not get down. A firefighter used a ladder to bring her safely to the ground.",q:"How did the kitten get down?",a:["A firefighter used a ladder","She jumped","A bird carried her"]},
+  {t:"Princess Ivy planted seeds in the spring. She watered them every day. By summer, her garden was full of sunflowers.",q:"What grew in the garden?",a:["sunflowers","carrots","roses"]},
+  {t:"Every Saturday, Grace bakes cookies with her grandma. This week they made chocolate chip. They shared them with the neighbors.",q:"Who did they share cookies with?",a:["the neighbors","the dog","the teacher"]},
+  {t:"The pony was tired after the long race. She drank cool water and rested in the shade of an old oak tree.",q:"Why did the pony rest?",a:["She was tired","She was hungry","It was night"]}],
+ 3:[
+  {t:"Princess Nora loved maps. One morning she found an old map in the castle library. It showed a hidden garden behind the waterfall. She packed snacks, called her dog Pepper, and set off on an adventure.",q:"Where was the hidden garden?",a:["behind the waterfall","under the castle","in the library"]},
+  {t:"Cats sleep about 15 hours a day. They are most awake at dawn and dusk. This is because their wild relatives hunted when the light was dim.",q:"When are cats most awake?",a:["at dawn and dusk","at noon","all night long"]},
+  {t:"Maya felt nervous about the spelling bee. She practiced every night with her brother. On the big day, she spelled 'beautiful' correctly and won second place.",q:"How did Maya get ready?",a:["She practiced every night","She read a comic","She sang songs"]},
+  {t:"Dolphins are mammals, not fish. They breathe air through a blowhole on top of their heads. Baby dolphins drink milk from their mothers.",q:"How do dolphins breathe?",a:["through a blowhole","with gills","through their tails"]},
+  {t:"The royal baker made a cake with three layers. The bottom was vanilla, the middle was strawberry, and the top was chocolate. The princess ate the top layer first.",q:"Which layer did the princess eat first?",a:["chocolate","vanilla","strawberry"]}]
+};
+const FRIENDS = [
+ {e:"👸",n:"Princess Rosie"},{e:"🐱",n:"Whiskers the Kitten"},{e:"🐶",n:"Biscuit the Puppy"},
+ {e:"🦄",n:"Twinkle the Unicorn"},{e:"🧚",n:"Pip the Fairy"},{e:"🐰",n:"Clover the Bunny"}];
+const PETS = [
+ {e:"🐱",n:"Whiskers",k:"kitten",c:0},{e:"🐶",n:"Biscuit",k:"puppy",c:5},{e:"🐰",n:"Clover",k:"bunny",c:12},
+ {e:"🐹",n:"Peanut",k:"hamster",c:20},{e:"🦄",n:"Twinkle",k:"unicorn",c:30},{e:"🐴",n:"Daisy",k:"pony",c:42},
+ {e:"🐈",n:"Mittens",k:"cat",c:55},{e:"🐕",n:"Rocket",k:"dog",c:70},{e:"🦋",n:"Flutter",k:"butterfly",c:85},
+ {e:"🐼",n:"Bamboo",k:"panda",c:100},{e:"🦊",n:"Ginger",k:"fox",c:120},{e:"🐬",n:"Splash",k:"dolphin",c:140},
+ {e:"🦢",n:"Grace",k:"swan",c:165},{e:"🐨",n:"Koko",k:"koala",c:190},{e:"🦩",n:"Rosy",k:"flamingo",c:220},
+ {e:"🐉",n:"Sparkle",k:"friendly dragon",c:260},{e:"🦚",n:"Jewel",k:"peacock",c:300},{e:"🐩",n:"Fifi",k:"poodle",c:350},
+ {e:"🐈‍⬛",n:"Midnight",k:"magic cat",c:400},{e:"👑",n:"Royal Crown",k:"crown of the kingdom",c:500}];
+const COUNT_EMO = ["🐱","🐶","🐰","🦄","🌸","⭐","🍓","🧁","🦋","💎"];
+const PRAISE = ["Sparkly!","Royal job!","Purr-fect!","Amazing!","You did it!","Super star!","Wow, princess!","Pawsome!","Magical!"];
+
+/* ---------------- STATE ---------------- */
+const KEY="sparkleKingdom.v1";
+let S={grade:1,stars:0,voice:true,name:"Princess",done:{},words:{}};
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+
+/* ---------------- HELPERS ---------------- */
+const $=s=>document.querySelector(s);
+const app=$("#app");
+const rnd=n=>Math.floor(Math.random()*n);
+const pick=a=>a[rnd(a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+const uniq=a=>[...new Set(a)];
+const words=()=>uniq(SIGHT[S.grade]);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let VOICE=null;
+function pickVoice(){if(!window.speechSynthesis)return null;const v=speechSynthesis.getVoices().filter(v=>/^en[-_]/i.test(v.lang));
+ return v.find(x=>/samantha|female|zira|google us english|karen|moira|tessa/i.test(x.name))||v[0]||null}
+if(window.speechSynthesis){VOICE=pickVoice();speechSynthesis.onvoiceschanged=()=>{VOICE=pickVoice()}}
+function say(t,rate){if(!S.voice||!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);
+ if(VOICE)u.voice=VOICE;u.rate=rate||0.9;u.pitch=1.25;speechSynthesis.speak(u)}
+
+let actx;function tone(f,d,type,delay){try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();const o=actx.createOscillator(),g=actx.createGain();
+ o.type=type||"sine";o.frequency.value=f;const t=actx.currentTime+(delay||0);g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.001,t+d);
+ o.connect(g).connect(actx.destination);o.start(t);o.stop(t+d)}catch(e){}}
+const chime=()=>[784,988,1175,1568].forEach((f,i)=>tone(f,.35,"triangle",i*.08));
+const boop=()=>tone(220,.25,"square");
+
+function confetti(n){const c=$("#confetti");const set=["💖","⭐","✨","🌸","👑","🦋","💎","🎀"];
+ for(let i=0;i<(n||24);i++){const s=document.createElement("span");s.className="fly";s.textContent=pick(set);
+  s.style.left=rnd(100)+"vw";s.style.top=(-10-rnd(30))+"vh";s.style.animationDelay=(Math.random()*.5)+"s";s.style.fontSize=(22+rnd(26))+"px";
+  c.appendChild(s);setTimeout(()=>s.remove(),2400)}}
+function toast(t,ms){const el=$("#toast");el.innerHTML=t;el.classList.add("on");setTimeout(()=>el.classList.remove("on"),ms||1100)}
+
+function addStar(n){const before=unlocked().length;S.stars+=n||1;save();const after=unlocked();
+ if(after.length>before){const p=after[after.length-1];setTimeout(()=>{confetti(50);toast(`<div style="font-size:80px">${p.e}</div>New friend!<br>${p.n} the ${p.k}`,2600);say(`You got a new friend! ${p.n} the ${p.k}!`)},700)}}
+const unlocked=()=>PETS.filter(p=>S.stars>=p.c);
+function right(){chime();confetti(18);const p=pick(PRAISE);toast(p);say(p,1);addStar(1)}
+function wrong(){boop();say("Try again!",1)}
+
+function header(title){return `<header><button class="btn ghost" onclick="home()" style="padding:10px 16px;font-size:20px">🏰 Home</button>
+ <h1 style="font-size:clamp(22px,5vw,34px)">${title}</h1><span class="pill">⭐ ${S.stars}</span></header>`}
+function friendSay(t){const f=pick(FRIENDS);return `<div class="friend"><span class="face">${f.e}</span><div class="say"><b>${f.n}:</b> ${t}</div></div>`}
+function progress(i,n){return `<div class="top" style="margin-top:12px"><span class="pill">${i}/${n}</span><div class="prog"><i style="width:${i/n*100}%"></i></div></div>`}
+
+/* round runner: n questions, then celebration */
+function rounds(title,n,make){let i=0;const next=()=>{if(i>=n){finish(title);return}i++;make(i,n,next)};next()}
+function finish(title){S.done[title]=(S.done[title]||0)+1;addStar(3);save();confetti(70);say("You finished! You earned three bonus stars!");
+ app.innerHTML=header(title)+`<div class="card"><div style="font-size:90px">🏆</div><div class="big" style="font-size:44px">Royal Win!</div>
+ <p style="font-size:22px">+3 bonus stars for ${esc(S.name)}!</p><div class="row"><button class="btn" onclick="home()">🏰 Castle</button>
+ <button class="btn lav" onclick="pets()">🐾 My Pets</button></div></div>`}
+
+/* ---------------- SCREENS ---------------- */
+function home(){if(window.speechSynthesis)speechSynthesis.cancel();
+ const g=S.grade, gname=["","1st","2nd","3rd"][g];
+ app.innerHTML=`<header><h1>👑 Sparkle Kingdom</h1><div style="display:flex;gap:6px;align-items:center"><span class="pill">⭐ ${S.stars}</span>
+ <button class="gear" id="gear" title="Grown-ups: press and hold">⚙️</button></div></header>
+ ${friendSay(`Hi ${esc(S.name)}! Pick a game. You're in <b>${gname} grade</b> magic!`)}
+ <h2 style="margin:18px 0 0;color:var(--deep)">📖 Reading Tower</h2>
+ <div class="grid">
+  <div class="tile" onclick="flash()"><span class="em">🪄</span><b>Magic Words</b><small>Flash cards</small></div>
+  <div class="tile" onclick="hearIt()"><span class="em">🐱</span><b>Kitten Calls</b><small>Hear it, tap it</small></div>
+  <div class="tile" onclick="builder()"><span class="em">🏰</span><b>Castle Sentences</b><small>Build a sentence</small></div>
+  <div class="tile" onclick="missing()"><span class="em">🧚</span><b>Fairy Fill-In</b><small>Missing word</small></div>
+  <div class="tile" onclick="story()"><span class="em">📜</span><b>Story Scrolls</b><small>Read & answer</small></div>
+  <div class="tile" onclick="memory()"><span class="em">💎</span><b>Jewel Match</b><small>Memory game</small></div>
+ </div>
+ <h2 style="margin:18px 0 0;color:var(--deep)">🔢 Math Garden</h2>
+ <div class="grid">
+  <div class="tile" onclick="mathQuiz('add')"><span class="em">🧁</span><b>Cupcake Adding</b><small>Plus</small></div>
+  <div class="tile" onclick="mathQuiz('sub')"><span class="em">🐶</span><b>Puppy Take-Away</b><small>Minus</small></div>
+  <div class="tile" onclick="mathQuiz('${g>=2?(g==3?'mul':'tens'):'count'}')"><span class="em">${g==3?'🦄':g==2?'💰':'🐰'}</span><b>${g==3?'Unicorn Times':g==2?'Royal Coins':'Bunny Count'}</b><small>${g==3?'Multiply':g==2?'Tens & ones':'Counting'}</small></div>
+  <div class="tile" onclick="mathQuiz('mix')"><span class="em">👸</span><b>Princess Challenge</b><small>A bit of everything</small></div>
+  <div class="tile" onclick="mathQuiz('story')"><span class="em">🐾</span><b>Pet Problems</b><small>Word problems</small></div>
+  <div class="tile" onclick="mathQuiz('compare')"><span class="em">🐊</span><b>Bigger or Smaller</b><small>&gt; &lt; =</small></div>
+ </div>
+ <h2 style="margin:18px 0 0;color:var(--deep)">🐾 Royal Pet Palace</h2>
+ <div class="grid"><div class="tile" onclick="pets()"><span class="em">🐶🐱</span><b>My Pets</b><small>${unlocked().length} of ${PETS.length} friends</small></div></div>`;
+ holdGear()}
+
+function holdGear(){const g=$("#gear");let t;const start=e=>{e.preventDefault();t=setTimeout(openGrown,1500)};const stop=()=>clearTimeout(t);
+ g.addEventListener("pointerdown",start);["pointerup","pointerleave","pointercancel"].forEach(ev=>g.addEventListener(ev,stop));
+ g.addEventListener("click",()=>toast("Grown-ups: hold<br>for 2 seconds",1300))}
+
+/* Magic Words: flash cards, kid reads, grown-up/kid taps "I read it!" */
+function flash(){const list=shuffle(words()).slice(0,10);
+ rounds("Magic Words",10,(i,n,next)=>{const w=list[i-1];
+  app.innerHTML=header("🪄 Magic Words")+progress(i,n)+`<div class="card"><p class="hint">Read the magic word!</p><div class="big">${esc(w)}</div>
+  <div class="row"><button class="btn sky" id="hear">🔊 Hear it</button><button class="btn mint" id="got">✅ I read it!</button></div></div>`+friendSay("Say it out loud, then tap the green button!");
+  $("#hear").onclick=()=>say(w,.8);$("#got").onclick=()=>{S.words[w]=(S.words[w]||0)+1;right();setTimeout(next,900)}})}
+
+/* Kitten Calls: hear a word, tap it */
+function hearIt(){rounds("Kitten Calls",10,(i,n,next)=>{const all=words(),w=pick(all);const opts=shuffle(uniq([w,...shuffle(all.filter(x=>x!==w)).slice(0,3)]));
+ app.innerHTML=header("🐱 Kitten Calls")+progress(i,n)+`<div class="card"><div style="font-size:70px">🐱</div><p style="font-size:22px">Whiskers says a word. Tap it!</p>
+ <button class="btn sky" id="again">🔊 Say it again</button><div class="choices">${opts.map(o=>`<button class="choice" data-w="${esc(o)}">${esc(o)}</button>`).join("")}</div></div>`;
+ setTimeout(()=>say(w,.8),300);$("#again").onclick=()=>say(w,.8);
+ if(!S.voice)$("#again").insertAdjacentHTML("afterend",`<p class="hint">Sound is off — a grown-up can say: <b>${esc(w)}</b></p>`);
+ app.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{if(b.dataset.w===w){b.classList.add("ok");right();setTimeout(next,900)}else{b.classList.add("no");wrong()}})})}
+
+/* Castle Sentences: tap words in order */
+function builder(){const list=shuffle(SENT[S.grade]);
+ rounds("Castle Sentences",6,(i,n,next)=>{const sent=list[(i-1)%list.length];const toks=sent.split(" ");let built=[];
+  const render=()=>{const pool=shuffle(toks.map((t,k)=>({t,k})));
+   app.innerHTML=header("🏰 Castle Sentences")+progress(i,n)+`<div class="card"><p style="font-size:20px">Tap the words in order to build the sentence!</p>
+   <button class="btn sky" id="hear">🔊 Hear the sentence</button><div class="slot" id="slot" style="margin-top:14px"></div>
+   <div class="row" id="pool">${pool.map(p=>`<button class="chip" data-k="${p.k}">${esc(p.t)}</button>`).join("")}</div>
+   <div class="row"><button class="btn ghost" id="undo">↩️ Undo</button></div></div>`+friendSay("Start with the word that has a capital letter!");
+   $("#hear").onclick=()=>say(sent,.85);
+   const slot=$("#slot");
+   app.querySelectorAll("#pool .chip").forEach(c=>c.onclick=()=>{const k=+c.dataset.k;const need=built.length;
+    if(toks[k]===toks[need]){built.push(k);c.classList.add("used");slot.insertAdjacentHTML("beforeend",`<span class="chip">${esc(toks[k])}</span>`);tone(660+need*40,.12,"triangle");
+     if(built.length===toks.length){say(sent,.9);setTimeout(()=>{right();setTimeout(next,1200)},1400)}}
+    else{c.classList.add("no");setTimeout(()=>c.classList.remove("no"),400);wrong()}});
+   $("#undo").onclick=()=>{if(!built.length)return;const k=built.pop();slot.lastElementChild.remove();app.querySelector(`#pool .chip[data-k="${k}"]`).classList.remove("used")}};
+  render()})}
+
+/* Fairy Fill-In: a sentence with a missing sight word */
+function missing(){const list=shuffle(SENT[S.grade]);const wl=words();
+ rounds("Fairy Fill-In",8,(i,n,next)=>{const sent=list[(i-1)%list.length];const toks=sent.split(" ");
+  let idxs=toks.map((t,k)=>[t.replace(/[.,!?']/g,"").toLowerCase(),k]).filter(([t])=>t.length>1);
+  const inList=idxs.filter(([t])=>wl.includes(t)||SIGHT[1].includes(t));if(inList.length)idxs=inList;
+  const [ans,k]=pick(idxs);const clean=toks[k].replace(/[.,!?]/g,""),punct=toks[k].slice(clean.length);
+  const opts=shuffle(uniq([clean,...shuffle(wl.filter(x=>x.toLowerCase()!==ans)).slice(0,3)]));
+  const shown=toks.map((t,j)=>j===k?`<span style="display:inline-block;min-width:90px;border-bottom:4px solid var(--lav)">&nbsp;</span>${esc(punct)}`:esc(t)).join(" ");
+  app.innerHTML=header("🧚 Fairy Fill-In")+progress(i,n)+`<div class="card"><div style="font-size:60px">🧚</div><p class="hint">Pip the Fairy lost a word! Which word fits?</p>
+  <div class="sentence">${shown}</div><button class="btn sky" id="hear">🔊 Hear it</button>
+  <div class="choices">${opts.map(o=>`<button class="choice" data-w="${esc(o)}">${esc(o)}</button>`).join("")}</div></div>`;
+  $("#hear").onclick=()=>say(toks.map((t,j)=>j===k?"blank":t).join(" "),.85);
+  app.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{if(b.dataset.w===clean){b.classList.add("ok");say(sent,.9);right();setTimeout(next,1500)}else{b.classList.add("no");wrong()}})})}
+
+/* Story Scrolls: reading comprehension */
+function story(){const list=shuffle(STORIES[S.grade]);
+ rounds("Story Scrolls",Math.min(5,list.length),(i,n,next)=>{const s=list[i-1];const opts=shuffle(s.a);
+  app.innerHTML=header("📜 Story Scrolls")+progress(i,n)+`<div class="card" style="text-align:left"><div style="font-size:50px;text-align:center">📜</div>
+  <div class="sentence" style="font-size:clamp(20px,4.6vw,30px)">${esc(s.t)}</div>
+  <div class="row"><button class="btn sky" id="hear">🔊 Read it to me</button></div>
+  <h3 style="font-size:24px;color:var(--deep);text-align:center">${esc(s.q)}</h3>
+  <div class="choices">${opts.map(o=>`<button class="choice" style="font-size:22px" data-w="${esc(o)}">${esc(o)}</button>`).join("")}</div></div>`;
+  $("#hear").onclick=()=>say(s.t+" "+s.q,.85);
+  app.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{if(b.dataset.w===s.a[0]){b.classList.add("ok");right();setTimeout(next,1100)}else{b.classList.add("no");wrong()}})})}
+
+/* Jewel Match: memory with sight words */
+function memory(){const ws=shuffle(words()).slice(0,S.grade==1?4:6);const gems=["💎","💖","🌸","⭐","🦋","🎀"];
+ const cards=shuffle([...ws,...ws].map((w,i)=>({w,id:i})));let open=[],matched=0,lock=false;
+ app.innerHTML=header("💎 Jewel Match")+`<div class="card"><p style="font-size:20px">Find the matching words!</p>
+ <div class="choices" id="mem" style="grid-template-columns:repeat(${S.grade==1?4:4},1fr)">${cards.map((c,i)=>`<button class="choice" data-i="${i}" style="min-height:90px">${gems[i%gems.length]}</button>`).join("")}</div></div>`;
+ app.querySelectorAll("#mem .choice").forEach(b=>b.onclick=()=>{if(lock||b.classList.contains("ok")||open.includes(b))return;const c=cards[+b.dataset.i];
+  b.textContent=c.w;b.style.fontSize="22px";say(c.w,.9);open.push(b);
+  if(open.length===2){lock=true;const [a,d]=open;if(cards[+a.dataset.i].w===cards[+d.dataset.i].w){a.classList.add("ok");d.classList.add("ok");chime();addStar(1);matched++;open=[];lock=false;
+    if(matched===ws.length)setTimeout(()=>finish("Jewel Match"),900)}
+   else setTimeout(()=>{[a,d].forEach((x,k)=>{x.textContent=gems[+x.dataset.i%gems.length];x.style.fontSize=""});open=[];lock=false},1100)}})}
+
+/* ---------------- MATH ---------------- */
+function makeProblem(kind){const g=S.grade;let type=kind;
+ if(kind==="mix")type=pick(g==1?["add","sub","count","compare"]:g==2?["add","sub","tens","compare"]:["add","sub","mul","div","compare"]);
+ const em=pick(COUNT_EMO);let a,b,ans,q,objs="",speak;
+ const lim={1:10,2:50,3:100}[g];
+ if(type==="add"){if(g==1){a=rnd(10);b=rnd(11-a)}else if(g==2){a=10+rnd(40);b=1+rnd(30)}else{a=100+rnd(400);b=10+rnd(300)}ans=a+b;q=`${a} + ${b}`;
+  if(g==1&&a+b<=10)objs=em.repeat(a)+" ➕ "+em.repeat(b);speak=`${a} plus ${b}`}
+ else if(type==="sub"){if(g==1){a=1+rnd(10);b=rnd(a+1)}else if(g==2){a=20+rnd(60);b=1+rnd(a-5)}else{a=200+rnd(700);b=10+rnd(a-50)}ans=a-b;q=`${a} − ${b}`;
+  if(g==1)objs=em.repeat(a-b)+`<span style="opacity:.25">${em.repeat(b)}</span>`;speak=`${a} take away ${b}`}
+ else if(type==="count"){a=3+rnd(13);ans=a;q="How many?";objs=em.repeat(a);speak="How many are there?"}
+ else if(type==="tens"){const t=1+rnd(9),o=rnd(10);ans=t*10+o;q=`${t} tens and ${o} ones`;objs="🔟".repeat(t)+" "+"🪙".repeat(o);speak=`${t} tens and ${o} ones is what number?`}
+ else if(type==="mul"){a=1+rnd(10);b=1+rnd(g==3?10:5);ans=a*b;q=`${a} × ${b}`;if(a*b<=24)objs=Array(a).fill(em.repeat(b)).join("<br>");speak=`${a} times ${b}`}
+ else if(type==="div"){b=1+rnd(9);ans=1+rnd(9);a=b*ans;q=`${a} ÷ ${b}`;speak=`${a} divided by ${b}`}
+ else if(type==="compare"){a=rnd(lim+1);b=rnd(lim+1);if(rnd(5)===0)b=a;ans=a>b?">":a<b?"<":"=";q=`${a} ? ${b}`;speak=`Is ${a} bigger, smaller, or equal to ${b}?`;
+  return {q,ans,opts:[">","<","="],speak,objs:"🐊 The alligator eats the bigger number!"}}
+ else if(type==="story"){const P=[
+   ()=>{a=1+rnd(g==1?5:g==2?20:50);b=1+rnd(g==1?5:g==2?20:50);ans=a+b;return `Princess Rosie has ${a} kittens. She finds ${b} more. How many kittens now?`},
+   ()=>{a=5+rnd(g==1?5:g==2?40:90);b=1+rnd(a-1);ans=a-b;return `There are ${a} puppies at the park. ${b} go home. How many are left?`},
+   ()=>{a=2+rnd(g==1?3:g==2?5:9);b=2+rnd(g==1?3:g==2?5:9);ans=g==1?a+b:a*b;return g==1?`Biscuit has ${a} bones. He gets ${b} more. How many bones?`:`There are ${a} bunnies. Each bunny eats ${b} carrots. How many carrots in all?`},
+   ()=>{a=10+rnd(g==1?0:g==2?40:200);b=1+rnd(9);ans=a+b;if(g==1){a=rnd(6);b=rnd(5);ans=a+b}return `The unicorn has ${a} stars. She makes ${b} more wishes and gets a star for each. How many stars?`}];
+  q=pick(P)();speak=q;return finishOpts({q,ans,speak,objs:"",story:true})}
+ return finishOpts({q,ans,speak,objs})}
+function finishOpts(p){const s=new Set([p.ans]);const spread=Math.max(3,Math.round(p.ans*.2));let guard=0;
+ while(s.size<4&&guard++<50){const d=p.ans+(rnd(2*spread+1)-spread);if(d>=0)s.add(d)}p.opts=shuffle([...s]);return p}
+function mathQuiz(kind){const names={add:"🧁 Cupcake Adding",sub:"🐶 Puppy Take-Away",count:"🐰 Bunny Count",tens:"💰 Royal Coins",mul:"🦄 Unicorn Times",mix:"👸 Princess Challenge",story:"🐾 Pet Problems",compare:"🐊 Bigger or Smaller"};
+ rounds(names[kind],10,(i,n,next)=>{const p=makeProblem(kind);
+  app.innerHTML=header(names[kind])+progress(i,n)+`<div class="card">${p.story?`<div class="sentence">${esc(p.q)}</div>`:`<div class="objs">${p.objs}</div><div class="math">${esc(p.q)}${p.q.includes("?")||p.q.includes("ones")?"":" = ?"}</div>`}
+  ${p.story&&p.objs?"":""}<button class="btn sky" id="hear">🔊 Read it</button>
+  <div class="choices">${p.opts.map(o=>`<button class="choice" style="font-size:34px" data-a="${esc(o)}">${esc(o)}</button>`).join("")}</div></div>`;
+  $("#hear").onclick=()=>say(p.speak,.85);
+  app.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{if(b.dataset.a===String(p.ans)){b.classList.add("ok");right();setTimeout(next,900)}else{b.classList.add("no");wrong()}})})}
+
+/* ---------------- PETS ---------------- */
+function pets(){const u=unlocked().length;const nxt=PETS.find(p=>S.stars<p.c);
+ app.innerHTML=header("🐾 Pet Palace")+friendSay(nxt?`You have <b>${u}</b> friends! Only <b>${nxt.c-S.stars}</b> more stars until a new friend joins the palace!`:"You found every friend in the kingdom! You are the Royal Queen of Pets! 👑")+
+ `<div class="pets">${PETS.map(p=>{const got=S.stars>=p.c;return `<div class="pet ${got?"":"locked"}" ${got?`onclick="petTap('${p.n}','${p.k}',this)"`:""}><span class="em">${got?p.e:"❔"}</span><b>${got?p.n:"???"}</b><small>${got?p.k:"⭐ "+p.c}</small></div>`}).join("")}</div>`}
+function petTap(n,k,el){const sounds={kitten:"Meow!",cat:"Meow!","magic cat":"Meow! Sparkle sparkle!",puppy:"Woof woof!",dog:"Woof!",poodle:"Ruff!",pony:"Neigh!",unicorn:"Neigh! I love you!"};
+ say(`${sounds[k]||"Hello!"} I'm ${n}!`,1);el.querySelector(".em").animate([{transform:"scale(1)"},{transform:"scale(1.4) rotate(10deg)"},{transform:"scale(1)"}],{duration:500});confetti(8)}
+
+/* ---------------- GROWN-UPS ---------------- */
+function openGrown(){const gb=$("#gradebtns");gb.innerHTML=[1,2,3].map(g=>`<button class="btn ${g==S.grade?"sel":""} ${["","","lav","sky"][g]}" data-g="${g}">${["","1st","2nd","3rd"][g]}</button>`).join("");
+ gb.querySelectorAll("button").forEach(b=>b.onclick=()=>{S.grade=+b.dataset.g;save();openGrown()});
+ $("#voiceOn").checked=S.voice;$("#kidName").value=S.name;
+ const top=Object.entries(S.words).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([w,c])=>`${w} (${c})`).join(", ");
+ const games=Object.entries(S.done).map(([g,c])=>`${g}: ${c}`).join(" · ");
+ $("#stats").innerHTML=`Stars: ${S.stars} · Pets: ${unlocked().length}/${PETS.length}<br>Games finished: ${games||"none yet"}<br>Most-read words: ${esc(top||"none yet")}`;
+ $("#grown").classList.add("on")}
+$("#closeGrown").onclick=()=>{S.voice=$("#voiceOn").checked;S.name=($("#kidName").value.trim()||"Princess");save();$("#grown").classList.remove("on");home()};
+$("#resetBtn").onclick=()=>{if(confirm("Reset all stars and pets?")){S.stars=0;S.done={};S.words={};save();openGrown()}};
+
+/* sky sparkles */
+(()=>{const sky=$("#sky");for(let i=0;i<22;i++){const s=document.createElement("span");s.className="twinkle";s.textContent=pick(["✨","⭐","💫","🌸"]);
+ s.style.left=rnd(100)+"vw";s.style.top=rnd(100)+"vh";s.style.animationDelay=(Math.random()*3)+"s";sky.appendChild(s)}})();
+home();
+</script>
+</body>
+</html>
