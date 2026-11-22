@@ -163,11 +163,11 @@ const words=()=>uniq(SIGHT[S.grade]);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 let VOICE=null;
-function pickVoice(){if(!window.speechSynthesis)return null;const v=speechSynthesis.getVoices().filter(v=>/^en[-_]/i.test(v.lang));
- return v.find(x=>/natural|neural|aria|jenny|ava|emma|samantha|google us english/i.test(x.name))||v.find(x=>/female|zira|karen|moira|tessa/i.test(x.name))||v[0]||null}
+function pickVoice(){if(!window.speechSynthesis)return null; const all=speechSynthesis.getVoices().filter(v=>/^en[-_]/i.test(v.lang));const us=all.filter(v=>/^en[-_]us/i.test(v.lang));const pool=us.length?us:all;
+ return pool.find(x=>/natural|neural|aria|jenny|ava|emma|samantha|google us english/i.test(x.name))||pool.find(x=>/female|zira|karen|tessa/i.test(x.name))||pool[0]||null}
 if(window.speechSynthesis){VOICE=pickVoice();speechSynthesis.onvoiceschanged=()=>{VOICE=pickVoice()}}
 function say(t,rate){if(!S.voice||!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);
- if(VOICE)u.voice=VOICE;u.rate=(rate||0.95)*0.98;u.pitch=1;u.volume=1;speechSynthesis.speak(u)}
+ if(VOICE)u.voice=VOICE;u.rate=(rate||0.95)*0.92;u.pitch=1.05;u.volume=1;speechSynthesis.speak(u)}
 
 let actx;function tone(f,d,type,delay){try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();const o=actx.createOscillator(),g=actx.createGain();
  o.type=type||"sine";o.frequency.value=f;const t=actx.currentTime+(delay||0);g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.001,t+d);
